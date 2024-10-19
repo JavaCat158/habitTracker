@@ -1,8 +1,9 @@
 package uselogic_test;
 
-import org.example.entity.User;
-import org.example.repository.UserRepository;
-import org.example.uselogic.ResetPassword;
+import ru.yalab.entity.User;
+import ru.yalab.entity.UserRole;
+import ru.yalab.repository.UserRepository;
+import ru.yalab.uselogic.ResetPassword;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -28,7 +29,7 @@ class ResetPasswordTest {
     void testExecute_ShouldReturnTrue_WhenUserExists() {
         // Подготавливаем тестовые данные
         String email = "user@example.com";
-        User user = new User("User", email, "oldPassword", false);
+        User user = new User("User", email, "oldPassword", UserRole.USER);
 
         // Настраиваем mock-репозиторий, чтобы findByEmail вернул пользователя
         when(userRepository.findByEmail(email)).thenReturn(user);

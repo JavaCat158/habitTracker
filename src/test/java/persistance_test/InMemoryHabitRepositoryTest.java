@@ -1,7 +1,7 @@
 package persistance_test;
 
-import org.example.entity.Habit;
-import org.example.out.persistence.InMemoryHabitRepository;
+import ru.yalab.entity.Habit;
+import ru.yalab.out.persistence.InMemoryHabitRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;

@@ -1,8 +1,9 @@
 package uselogic_test;
 
-import org.example.entity.User;
-import org.example.repository.UserRepository;
-import org.example.uselogic.RegisterUser;
+import ru.yalab.entity.User;
+import ru.yalab.entity.UserRole;
+import ru.yalab.repository.UserRepository;
+import ru.yalab.uselogic.RegisterUser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -30,13 +31,13 @@ class RegisterUserTest {
         String username = "user1";
         String email = "user1@example.com";
         String password = "password123";
-        boolean isAdmin = false;
+
 
         // Настраиваем mock-репозиторий, чтобы findByEmail вернул null
         when(userRepository.findByEmail(email)).thenReturn(null);
 
         // Вызываем метод execute
-        boolean result = registerUser.execute(username, email, password, isAdmin);
+        boolean result = registerUser.execute(username, email, password, UserRole.USER);
 
         // Проверяем результат
         assertTrue(result); // Ожидаем, что метод вернет true
@@ -50,14 +51,14 @@ class RegisterUserTest {
         String username = "user2";
         String email = "user2@example.com";
         String password = "password456";
-        boolean isAdmin = false;
+
 
         // Настраиваем mock-репозиторий, чтобы findByEmail вернул пользователя
-        User existingUser = new User(username, email, password, isAdmin);
+        User existingUser = new User(username, email, password, UserRole.USER);
         when(userRepository.findByEmail(email)).thenReturn(existingUser);
 
         // Вызываем метод execute
-        boolean result = registerUser.execute(username, email, password, isAdmin);
+        boolean result = registerUser.execute(username, email, password, UserRole.USER);
 
         // Проверяем результат
         assertFalse(result); // Ожидаем, что метод вернет false

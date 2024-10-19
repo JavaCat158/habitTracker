@@ -1,11 +1,13 @@
 package uselogic_test;
 
-import org.example.entity.Habit;
-import org.example.entity.User;
-import org.example.repository.HabitRepository;
-import org.example.repository.UserRepository;
-import org.example.services.NotificationService;
-import org.example.uselogic.SendHabitReminder;
+import ru.yalab.entity.Habit;
+import ru.yalab.entity.User;
+import ru.yalab.entity.UserRole;
+import ru.yalab.entity.UserStatus;
+import ru.yalab.repository.HabitRepository;
+import ru.yalab.repository.UserRepository;
+import ru.yalab.services.NotificationService;
+import ru.yalab.uselogic.SendHabitReminder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -45,7 +47,7 @@ class SendHabitReminderTest {
     @Test
     void execute_ShouldPrintNoHabits_WhenUserHasNoHabits() {
         String userEmail = "test@example.com";
-        User user = new User("Test User", userEmail, "password", false);
+        User user = new User("Test User", userEmail, "password", UserRole.USER);
 
         when(userRepository.findByEmail(userEmail)).thenReturn(user);
         when(habitRepository.finaAllByUserEmail(userEmail)).thenReturn(new ArrayList<>());
@@ -59,7 +61,7 @@ class SendHabitReminderTest {
     @Test
     void execute_ShouldSendNotifications_WhenUserHasHabits() {
         String userEmail = "test@example.com";
-        User user = new User("Test User", userEmail, "password", false);
+        User user = new User("Test User", userEmail, "password", UserRole.USER);
         List<Habit> habits = new ArrayList<>();
         habits.add(new Habit("Exercise", "30 minutes of exercise", "Daily", userEmail));
         habits.add(new Habit("Read", "Read a chapter of a book", "Daily", userEmail));

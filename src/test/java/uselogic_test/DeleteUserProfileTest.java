@@ -1,8 +1,9 @@
 package uselogic_test;
 
-import org.example.entity.User;
-import org.example.repository.UserRepository;
-import org.example.uselogic.DeleteUserProfile;
+import ru.yalab.entity.User;
+import ru.yalab.entity.UserRole;
+import ru.yalab.repository.UserRepository;
+import ru.yalab.uselogic.DeleteUserProfile;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -25,7 +26,7 @@ class DeleteUserProfileTest {
     @Test
     void testDeleteUser_UserExists_ShouldDeleteUser() {
         // Создаем мок для существующего пользователя
-        User user = new User("john@example.com", "John", "password123", false);
+        User user = new User("john@example.com", "John", "password123", UserRole.USER);
 
         // Настраиваем репозиторий, чтобы он возвращал пользователя
         when(userRepository.findByEmail("john@example.com")).thenReturn(user);

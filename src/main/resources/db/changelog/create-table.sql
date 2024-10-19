@@ -1,0 +1,30 @@
+
+CREATE SCHEMA IF NOT EXISTS sequence_schema;
+CREATE SCHEMA IF NOT EXISTS table_schema;
+
+CREATE SEQUENCE IF NOT EXISTS sequence_schema.user_id_seq
+START WITH 1
+INCREMENT BY 1;
+
+CREATE SEQUENCE IF NOT EXISTS sequence_schema.habit_id_seq
+START WITH 1
+INCREMENT BY 1;
+
+CREATE TABLE IF NOT EXISTS table_schema.users (
+id BIGINT PRIMARY KEY,
+name VARCHAR(255) NOT NULL,
+email VARCHAR(255) NOT NULL UNIQUE,
+password VARCHAR(255) NOT NULL,
+role VARCHAR(50) NOT NULL,
+status VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS table_schema.habits (
+id BIGINT PRIMARY KEY,
+title VARCHAR(255) NOT NULL,
+description TEXT,
+frequency VARCHAR(100) NOT NULL,
+creation_date DATE NOT NULL,
+user_email VARCHAR(255) NOT NULL,
+completed_dates TEXT
+);

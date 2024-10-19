@@ -1,6 +1,6 @@
 package entity;
 
-import org.example.entity.Habit;
+import ru.yalab.entity.Habit;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
