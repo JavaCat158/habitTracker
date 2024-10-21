@@ -28,8 +28,8 @@ public class MarkHabitAsCompleted {
         this.habitRepo = habitRepo;
     }
 
-    public boolean execute(String email, String title) throws SQLException {
-        Habit habit = habitRepo.findByTitle(email, title);
+    public boolean execute(String email, long id) throws SQLException {
+        Habit habit = habitRepo.findByTitle(email, id);
 
         if (habit != null) {
             habit.markCompleted(LocalDate.now());

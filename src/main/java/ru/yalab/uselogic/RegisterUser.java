@@ -33,18 +33,21 @@ public class RegisterUser {
     }
 
     public boolean execute(String username, String email, String password, UserRole userRole) throws SQLException {
+        // Проверка валидности email
         if (!EmailValidator.isValidate(email)) {
             System.out.println("Некорректный email. Email должен быть вида буквы123@test.ru");
             return false;
         }
 
+        // Проверка существования пользователя с таким email
         if (userRepository.findByEmail(email) != null) {
             System.out.println("Пользователь с таким email уже существует!");
-            return false; // пользователь с таким email уже существует
+            return false;
         }
 
-        User user = new User(username, email, password, userRole);
-        userRepository.save(user);
+        // Создание нового пользователя
+        User user = new User(0, username, email, password, userRole); // ID 0 или автогенерация
+        userRepository.addUser(user);
         return true;
     }
 }

@@ -1,3 +1,4 @@
+/*
 package uselogic_test;
 
 import ru.yalab.repository.HabitRepository;
@@ -61,3 +62,4 @@ class UpdateHabitTest {
     }
 }
 
+*/

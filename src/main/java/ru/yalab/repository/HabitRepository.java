@@ -23,31 +23,31 @@ public interface HabitRepository {
      *
      * @param habit объект Habit, который нужно сохранить
      */
-    void save(Habit habit) throws SQLException;
+    void addHabit(Habit habit) throws SQLException;
 
     /**
      * Удаляет все привычки пользователя по его email.
      *
-     * @param userMail email пользователя
+     * @param id номер пользователя
      */
-    void deleteAll(String userMail) throws SQLException;
+    void deleteHabit(long id) throws SQLException;
 
     /**
      * Находит привычку по заголовку и email пользователя.
      *
      * @param userMail email пользователя
-     * @param title    заголовок привычки
+     * @param id    идентификатор привычки
      * @return найденная привычка или null, если не найдена
      */
-    Habit findByTitle(String userMail, String title) throws SQLException;
+    Habit findByTitle(String userMail, long id) throws SQLException;
 
     /**
      * Удаляет привычку по заголовку и email пользователя.
      *
      * @param userMail email пользователя
-     * @param title    заголовок привычки
+     * @param id    идентификатор привычки
      */
-    void deleteByTitle(String userMail, String title) throws SQLException;
+    void deleteById(String userMail, long id) throws SQLException;
 
     /**
      * Находит все привычки пользователя по его email.
@@ -72,9 +72,5 @@ public interface HabitRepository {
      * @param newFrequency     новая частота привычки
      * @return true, если обновление прошло успешно, иначе false
      */
-    boolean updateHabit(String userEmail,
-                        String oldTitle,
-                        String newTitle,
-                        String newDescription,
-                        String newFrequency) throws SQLException;
+    void updateHabit(Habit habit) throws SQLException;
 }

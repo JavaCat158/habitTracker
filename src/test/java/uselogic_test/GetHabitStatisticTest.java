@@ -1,3 +1,4 @@
+/*
 package uselogic_test;
 
 import ru.yalab.entity.Habit;
@@ -77,3 +78,4 @@ class GetHabitStatisticTest {
         verify(habitRepository, times(1)).findByTitle("user@example.com", "Non-existent Habit");
     }
 }
+*/

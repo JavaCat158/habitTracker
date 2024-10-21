@@ -6,6 +6,7 @@ package ru.yalab.entity;
  * а также его роль и статус блокировки.
  */
 public class User {
+    private long id;
     private String name;
     private String email;
     private String password;
@@ -20,7 +21,8 @@ public class User {
      * @param password пароль пользователя
      * @param role     роль пользователя (администратор или пользователь)
      */
-    public User(String name, String email, String password, UserRole role) {
+    public User(long id, String name, String email, String password, UserRole role) {
+        this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
@@ -109,6 +111,14 @@ public class User {
         return status;
     }
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
     /**
      * Устанавливает статус блокировки для пользователя.
      *
@@ -139,7 +149,7 @@ public class User {
      */
     @Override
     public String toString() {
-        return "User{" +
+        return "User{" + "id= " + id + '\'' +
                 "name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +

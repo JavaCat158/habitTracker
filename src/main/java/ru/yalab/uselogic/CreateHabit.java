@@ -4,6 +4,7 @@ import ru.yalab.entity.Habit;
 import ru.yalab.repository.HabitRepository;
 
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Класс CreateHabit предоставляет логику для создания привычек.
@@ -26,8 +27,8 @@ public class CreateHabit {
     }
 
     public void execute(String title, String description, String frequency, String userEmail) throws SQLException {
-        Habit habit = new Habit(title, description, frequency, userEmail);
-        habitRepository.save(habit);
+        Habit habit = new Habit(0,title, description, frequency, userEmail);
+        habitRepository.addHabit(habit);
     }
 
     public void getAllHabits() throws SQLException {

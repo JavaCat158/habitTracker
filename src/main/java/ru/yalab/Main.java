@@ -9,6 +9,7 @@ public class Main {
     public static void main(String[] args) throws Exception {
         LiquibaseLoader liquibaseLoader = new LiquibaseLoader();
         liquibaseLoader.start();
+
         AppInitializer appInitializer = new AppInitializer();
         NotificationController notificationController = appInitializer.init();
         HabitTrackerCli cli = new HabitTrackerCli();

@@ -1,5 +1,6 @@
 package ru.yalab.uselogic;
 
+import ru.yalab.entity.Habit;
 import ru.yalab.repository.HabitRepository;
 
 import java.sql.SQLException;
@@ -30,11 +31,10 @@ public class UpdateHabit {
         this.habitRepo = habitRepo;
     }
 
-    public boolean execute(String userEmail,
-                           String oldTitle,
-                           String newTitle,
-                           String newDescription,
-                           String newFrequency) throws SQLException {
-        return habitRepo.updateHabit(userEmail, oldTitle, newTitle, newDescription, newFrequency);
+    public boolean execute(Habit habit) throws SQLException {
+        if (habit != null) {
+            return true;
+        }
+        return false;
     }
 }

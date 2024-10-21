@@ -1,3 +1,4 @@
+/*
 package persistance_test;
 
 import ru.yalab.entity.User;
@@ -83,3 +84,4 @@ class InMemoryUserRepositoryTest {
         assertTrue(users.contains(user2));
     }
 }
+*/

@@ -18,7 +18,7 @@ import java.util.LinkedHashSet;
 
 
 public interface UserRepository {
-    void save(User user) throws SQLException;
+    void addUser(User user) throws SQLException;
 
     User findByEmail(String email) throws SQLException;
 

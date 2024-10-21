@@ -11,7 +11,7 @@ public class DeleteAllHabit {
         this.habitRepo = habitRepo;
     }
 
-    public void deleteAllHabits(String userMail) throws SQLException {
-        habitRepo.deleteAll(userMail);
+    public void deleteAllHabits(long id) throws SQLException {
+        habitRepo.deleteHabit(id);
     }
 }

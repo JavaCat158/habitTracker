@@ -1,8 +1,9 @@
 package ru.yalab.in.web;
 
 import ru.yalab.controllers.NotificationController;
-import ru.yalab.out.persistence.InMemoryHabitRepository;
-import ru.yalab.out.persistence.InMemoryUserRepository;
+import ru.yalab.out.database.DataBaseTemplate;
+import ru.yalab.out.persistence.JDBCHabitRepository;
+import ru.yalab.out.persistence.JDBCUserRepository;
 import ru.yalab.services.EmailNotificationService;
 import ru.yalab.uselogic.SendHabitReminder;
 
@@ -16,9 +17,10 @@ import ru.yalab.uselogic.SendHabitReminder;
  */
 
 public class AppInitializer {
+    DataBaseTemplate dataBaseTemplate = new DataBaseTemplate();
     public NotificationController init() {
-        InMemoryUserRepository userRepository = new InMemoryUserRepository();
-        InMemoryHabitRepository habitRepository = new InMemoryHabitRepository();
+        JDBCUserRepository userRepository = new JDBCUserRepository(dataBaseTemplate);
+        JDBCHabitRepository habitRepository = new JDBCHabitRepository(dataBaseTemplate);
 
         EmailNotificationService emailNotificationService = new EmailNotificationService();
 

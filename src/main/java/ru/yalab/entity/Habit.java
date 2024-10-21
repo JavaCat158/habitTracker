@@ -11,6 +11,7 @@ import java.util.List;
  * email пользователя и датах выполнения привычки.
  */
 public class Habit {
+    private long id;
     private String title;
     private String description;
     private String frequency;
@@ -27,7 +28,8 @@ public class Habit {
      * @param frequency   частота выполнения привычки (например, "ежедневно", "еженедельно")
      * @param userEmail   email пользователя, создавшего привычку
      */
-    public Habit(String title, String description, String frequency, String userEmail) {
+    public Habit(long id, String title, String description, String frequency, String userEmail) {
+        this.id = id;
         this.title = title;
         this.description = description;
         this.frequency = frequency;
@@ -145,6 +147,22 @@ public class Habit {
     }
 
     /**
+     * Возвращает идентификатор привычки
+     * @return идентификатор
+     */
+    public long getId() {
+        return id;
+    }
+
+    /**
+     * Устанавливает номер идентификатора
+     * @param id идентификатор
+     */
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    /**
      * Рассчитывает текущий "streak" (цепочку последовательных дней, когда привычка была выполнена).
      *
      * @return длина текущей цепочки выполнения привычки
@@ -185,10 +203,14 @@ public class Habit {
      */
     @Override
     public String toString() {
-        return "Привычка " + userEmail +": " + '\n' +
+        return "Привычка " + id + ". " + userEmail +": " + '\n' +
                 "\tназвание= " + title + '\n' +
                 "\tописание=" + description + '\n' +
                 "\tчастота выполнения= " + frequency + '\n' +
                 "\tдата создания=" + creationDate + "\n";
+    }
+
+    public void setCompletedDates(List<LocalDate> completedDates) {
+        this.completedDates = completedDates;
     }
 }

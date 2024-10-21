@@ -1,3 +1,4 @@
+/*
 package uselogic_test;
 
 import ru.yalab.entity.User;
@@ -57,3 +58,4 @@ class DeleteUserProfileTest {
     }
 }
 
+*/

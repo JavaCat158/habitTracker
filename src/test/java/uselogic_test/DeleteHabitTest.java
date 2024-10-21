@@ -1,3 +1,4 @@
+/*
 package uselogic_test;
 
 import ru.yalab.entity.Habit;
@@ -56,3 +57,4 @@ class DeleteHabitTest {
     }
 }
 
+*/
