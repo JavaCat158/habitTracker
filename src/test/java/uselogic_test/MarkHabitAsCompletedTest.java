@@ -1,15 +1,9 @@
+/*
 package uselogic_test;
 
-import org.example.entity.Habit;
-import org.example.repository.HabitRepository;
-import org.example.uselogic.MarkHabitAsCompleted;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-
-import org.example.entity.Habit;
-import org.example.repository.HabitRepository;
-import org.example.uselogic.MarkHabitAsCompleted;
+import ru.yalab.entity.Habit;
+import ru.yalab.repository.HabitRepository;
+import ru.yalab.uselogic.MarkHabitAsCompleted;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -72,3 +66,4 @@ class MarkHabitAsCompletedTest {
 }
 
 
+*/

@@ -1,16 +1,17 @@
 package uselogic_test;
 
-import org.example.entity.User;
-import org.example.repository.UserRepository;
-import org.example.uselogic.GetAllUsers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import ru.yalab.entity.User;
+import ru.yalab.entity.UserRole;
+import ru.yalab.repository.UserRepository;
+import ru.yalab.uselogic.GetAllUsers;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.LinkedHashSet;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 class GetAllUsersTest {
@@ -20,34 +21,48 @@ class GetAllUsersTest {
 
     @BeforeEach
     void setUp() {
-        // Создаем mock-объект для UserRepository
-        userRepository = Mockito.mock(UserRepository.class);
-        // Инициализируем GetAllUsers с mock-репозиторием
-        getAllUsers = new GetAllUsers(userRepository);
+        userRepository = Mockito.mock(UserRepository.class);  // Мокаем UserRepository
+        getAllUsers = new GetAllUsers(userRepository);         // Передаем мок в GetAllUsers
     }
 
     @Test
-    void testExecute_ShouldReturnAllUsers() {
-        // Подготавливаем тестовые данные (список пользователей)
-        List<User> mockUsers = Arrays.asList(
-                new User("John Doe", "john@example.com", "password123", false),
-                new User("Jane Doe", "jane@example.com", "securepass", true)
-        );
+    void shouldReturnAllUsersInOrder() {
+        // Создаем тестовые данные - пользователей
+        User user1 = new User("email1@test.com", "User One", "password1", UserRole.USER);
+        User user2 = new User("email2@test.com", "User Two", "password2", UserRole.USER);
+        User user3 = new User("email3@test.com", "User Three", "password3", UserRole.USER);
 
-        // Устанавливаем поведение mock-репозитория
-        when(userRepository.findAll()).thenReturn(mockUsers);
+        // Создаем LinkedHashSet с пользователями в определенном порядке
+        LinkedHashSet<User> expectedUsers = new LinkedHashSet<>();
+        expectedUsers.add(user1);
+        expectedUsers.add(user2);
+        expectedUsers.add(user3);
 
-        // Вызываем метод execute
-        List<User> result = getAllUsers.execute();
+        // Настраиваем мок, чтобы возвращал этот LinkedHashSet при вызове findAll()
+        when(userRepository.findAll()).thenReturn(expectedUsers);
 
-        // Проверяем результат
-        assertEquals(2, result.size());
-        assertEquals("John Doe", result.get(0).getName());
-        assertEquals("jane@example.com", result.get(1).getEmail());
-        assertEquals(false, result.get(0).isAdmin());
-        assertEquals(true, result.get(1).isAdmin());
+        // Вызываем метод execute() и получаем результат
+        LinkedHashSet<User> actualUsers = getAllUsers.execute();
 
-        // Проверяем, что метод findAll() был вызван ровно один раз
+        // Проверяем, что результат содержит всех пользователей в правильном порядке
+        assertEquals(expectedUsers, actualUsers, "Возвращенные пользователи не совпадают с ожидаемыми");
+
+        // Убедимся, что findAll() был вызван ровно один раз
+        verify(userRepository, times(1)).findAll();
+    }
+
+    @Test
+    void shouldReturnEmptySetWhenNoUsers() {
+        // Настраиваем мок, чтобы возвращал пустой LinkedHashSet
+        when(userRepository.findAll()).thenReturn(new LinkedHashSet<>());
+
+        // Вызываем метод execute() и получаем результат
+        LinkedHashSet<User> actualUsers = getAllUsers.execute();
+
+        // Проверяем, что результат - пустой набор
+        assertTrue(actualUsers.isEmpty(), "Ожидался пустой набор пользователей");
+
+        // Убедимся, что findAll() был вызван ровно один раз
         verify(userRepository, times(1)).findAll();
     }
 }

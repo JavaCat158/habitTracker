@@ -1,11 +1,15 @@
 package uselogic_test;
 
-import org.example.entity.User;
-import org.example.repository.UserRepository;
-import org.example.uselogic.LoginUser;
+import ru.yalab.entity.User;
+import ru.yalab.entity.UserRole;
+import ru.yalab.entity.UserStatus;
+import ru.yalab.repository.UserRepository;
+import ru.yalab.uselogic.LoginUser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+
+import javax.management.relation.RoleStatus;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -33,8 +37,10 @@ class LoginUserTest {
 
         // Создаем mock-объект User
         User mockUser = Mockito.mock(User.class);
+
+        // Устанавливаем поведение для mock-объекта
         when(mockUser.getPassword()).thenReturn(password);
-        when(mockUser.isBloced()).thenReturn(false);
+        when(mockUser.getStatus()).thenReturn(UserStatus.ACTIVE); // Убеждаемся, что пользователь активен
         when(userRepository.findByEmail(email)).thenReturn(mockUser);
 
         // Вызываем метод execute
@@ -42,7 +48,9 @@ class LoginUserTest {
 
         // Проверяем результат
         assertTrue(result); // Ожидаем, что метод вернет true
-        verify(userRepository, times(1)).findByEmail(email); // Проверяем, что findByEmail был вызван
+
+        // Проверяем, что метод findByEmail был вызван ровно один раз
+        verify(userRepository, times(1)).findByEmail(email);
     }
 
     @Test
@@ -53,8 +61,9 @@ class LoginUserTest {
 
         // Создаем mock-объект User
         User mockUser = Mockito.mock(User.class);
+
         when(mockUser.getPassword()).thenReturn(password);
-        when(mockUser.isBloced()).thenReturn(true);
+        when(mockUser.getStatus()).thenReturn(UserStatus.BLOCKED);
         when(userRepository.findByEmail(email)).thenReturn(mockUser);
 
         // Вызываем метод execute
@@ -74,7 +83,7 @@ class LoginUserTest {
         // Создаем mock-объект User
         User mockUser = Mockito.mock(User.class);
         when(mockUser.getPassword()).thenReturn("correct_password");
-        when(mockUser.isBloced()).thenReturn(false);
+        when(mockUser.getStatus()).thenReturn(UserStatus.ACTIVE);
         when(userRepository.findByEmail(email)).thenReturn(mockUser);
 
         // Вызываем метод execute
@@ -106,7 +115,7 @@ class LoginUserTest {
     void testGetUser_ShouldReturnUser_WhenUserExists() {
         // Подготавливаем тестовые данные
         String email = "user@example.com";
-        User mockUser = new User("John Doe", email, "password", false);
+        User mockUser = new User("John Doe", email, "password", UserRole.USER);
         when(userRepository.findByEmail(email)).thenReturn(mockUser);
 
         // Вызываем метод getUser

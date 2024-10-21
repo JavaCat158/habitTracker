@@ -1,8 +1,10 @@
 package uselogic_test;
 
-import org.example.entity.User;
-import org.example.repository.UserRepository;
-import org.example.uselogic.BlockUsers;
+import ru.yalab.entity.User;
+import ru.yalab.entity.UserRole;
+import ru.yalab.entity.UserStatus;
+import ru.yalab.repository.UserRepository;
+import ru.yalab.uselogic.BlockUsers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -25,7 +27,7 @@ class BlockUsersTest {
     @Test
     void testBlockUserSuccess() {
         // Создаем пользователя для теста
-        User user = new User("John Doe", "john@example.com", "password123", false);
+        User user = new User("John Doe", "john@example.com", "password123", UserRole.USER);
 
         // Настраиваем репозиторий для возврата пользователя
         when(userRepository.findByEmail("john@example.com")).thenReturn(user);
@@ -36,7 +38,7 @@ class BlockUsersTest {
 
         // Проверяем, что метод блокировки был вызван у пользователя
         verify(userRepository).findByEmail("john@example.com");
-        assertTrue(user.isBloced()); // Проверка, что пользователь заблокирован
+        assertEquals(UserStatus.BLOCKED, user.getStatus()); // Проверка, что пользователь заблокирован
     }
 
     @Test

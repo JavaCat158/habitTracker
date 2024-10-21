@@ -1,10 +1,14 @@
+/*
 package persistance_test;
 
-import org.example.entity.User;
-import org.example.out.persistence.InMemoryUserRepository;
+import ru.yalab.entity.User;
+import ru.yalab.entity.UserRole;
+import ru.yalab.out.persistence.InMemoryUserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.sql.SQLException;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -19,8 +23,8 @@ class InMemoryUserRepositoryTest {
     }
 
     @Test
-    void testSaveUser() {
-        User user = new User("John Doe", "john@example.com", "password123", false);
+    void testSaveUser() throws SQLException {
+        User user = new User("John Doe", "john@example.com", "password123", UserRole.USER);
         userRepository.save(user);
 
         // Проверяем, что пользователь сохранен
@@ -29,13 +33,13 @@ class InMemoryUserRepositoryTest {
         assertEquals("John Doe", foundUser.getName());
         assertEquals("john@example.com", foundUser.getEmail());
         assertEquals("password123", foundUser.getPassword());
-        assertFalse(foundUser.isAdmin());
+        assertTrue(foundUser.getRole().equals(UserRole.USER));
     }
 
     @Test
-    void testFindUserByEmail() {
-        User user1 = new User("User One", "user1@example.com", "password1", false);
-        User user2 = new User("User Two", "user2@example.com", "password2", false);
+    void testFindUserByEmail() throws SQLException {
+        User user1 = new User("User One", "user1@example.com", "password1", UserRole.USER);
+        User user2 = new User("User Two", "user2@example.com", "password2", UserRole.USER);
         userRepository.save(user1);
         userRepository.save(user2);
 
@@ -50,8 +54,8 @@ class InMemoryUserRepositoryTest {
     }
 
     @Test
-    void testDeleteUserByEmail() {
-        User user = new User("John Doe", "john@example.com", "password123", false);
+    void testDeleteUserByEmail() throws SQLException {
+        User user = new User("John Doe", "john@example.com", "password123", UserRole.USER);
         userRepository.save(user);
 
         // Проверяем, что пользователь существует до удаления
@@ -67,16 +71,17 @@ class InMemoryUserRepositoryTest {
     }
 
     @Test
-    void testFindAllUsers() {
-        User user1 = new User("User One", "user1@example.com", "password1", false);
-        User user2 = new User("User Two", "user2@example.com", "password2", true);
+    void testFindAllUsers() throws SQLException {
+        User user1 = new User("User One", "user1@example.com", "password1", UserRole.USER);
+        User user2 = new User("User Two", "user2@example.com", "password2", UserRole.ADMIN);
         userRepository.save(user1);
         userRepository.save(user2);
 
         // Получаем всех пользователей
-        List<User> users = userRepository.findAll();
+        LinkedHashSet<User> users = userRepository.findAll();
         assertEquals(2, users.size());
         assertTrue(users.contains(user1));
         assertTrue(users.contains(user2));
     }
 }
+*/

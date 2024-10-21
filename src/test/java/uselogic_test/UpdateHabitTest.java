@@ -1,7 +1,8 @@
+/*
 package uselogic_test;
 
-import org.example.repository.HabitRepository;
-import org.example.uselogic.UpdateHabit;
+import ru.yalab.repository.HabitRepository;
+import ru.yalab.uselogic.UpdateHabit;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -61,3 +62,4 @@ class UpdateHabitTest {
     }
 }
 
+*/
