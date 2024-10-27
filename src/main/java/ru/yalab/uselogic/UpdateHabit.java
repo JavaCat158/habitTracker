@@ -31,10 +31,22 @@ public class UpdateHabit {
         this.habitRepo = habitRepo;
     }
 
-    public boolean execute(Habit habit) throws SQLException {
+    public boolean execute(String userEmail,
+                           Long id,
+                           String newTitle,
+                           String newDescription,
+                           String newFrequency) throws SQLException {
+        Habit habit = habitRepo.findById(id);
         if (habit != null) {
+            habit.setTitle(newTitle);
+            habit.setDescription(newDescription);
+            habit.setFrequency(newFrequency);
+            habit.setUserEmail(userEmail);
+            habitRepo.updateHabit(habit);
+            System.out.println("Данные изменены");
             return true;
         }
+        System.out.println(new SQLException());
         return false;
     }
 }

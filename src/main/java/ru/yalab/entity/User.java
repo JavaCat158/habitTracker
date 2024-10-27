@@ -16,12 +16,13 @@ public class User {
     /**
      * Конструктор для создания объекта {@code User}.
      *
-     * @param name     имя пользователя
-     * @param email    email пользователя
-     * @param password пароль пользователя
-     * @param role     роль пользователя (администратор или пользователь)
+     * @param name         имя пользователя
+     * @param email        email пользователя
+     * @param password     пароль пользователя
+     * @param role         роль пользователя (администратор или пользователь)
+     * @param statusString
      */
-    public User(long id, String name, String email, String password, UserRole role) {
+    public User(long id, String name, String email, String password, UserRole role, UserStatus statusString) {
         this.id = id;
         this.name = name;
         this.email = email;

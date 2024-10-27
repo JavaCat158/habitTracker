@@ -59,17 +59,15 @@ public class UpdateUserProfile {
             return false;
         }
 
-        user.setName(newName);
-        user.setEmail(newEmail);
-        user.setPassword(newPassword);
-
-        userRepository.deleteByEmail(currentEmail);
-
         List<Habit> habits = habitRepository.findAllByUserEmail(currentEmail);
         for (Habit habit : habits) {
             habit.setUserEmail(newEmail);  // Обновление email в привычке
         }
 
+        user.setName(newName);
+        user.setEmail(newEmail);
+        user.setPassword(newPassword);
+        userRepository.updateUserProfile(user);
         return true;
     }
 }

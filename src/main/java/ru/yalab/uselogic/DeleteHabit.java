@@ -25,11 +25,11 @@ public class DeleteHabit {
         this.habitRepository = habitRepository;
     }
 
-    public boolean execute(String email, long id) throws SQLException {
-        Habit habit = habitRepository.findByTitle(email, id);
+    public boolean execute(long id) throws SQLException {
+        Habit habit = habitRepository.findById(id);
 
         if (habit != null) {
-            habitRepository.deleteById(email, id);
+            habitRepository.deleteById(id);
             return true;
         }
         return false;

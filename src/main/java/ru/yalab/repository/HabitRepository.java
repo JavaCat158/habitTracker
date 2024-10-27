@@ -35,19 +35,17 @@ public interface HabitRepository {
     /**
      * Находит привычку по заголовку и email пользователя.
      *
-     * @param userMail email пользователя
      * @param id    идентификатор привычки
      * @return найденная привычка или null, если не найдена
      */
-    Habit findByTitle(String userMail, long id) throws SQLException;
+    Habit findById(Long id) throws SQLException;
 
     /**
      * Удаляет привычку по заголовку и email пользователя.
      *
-     * @param userMail email пользователя
-     * @param id    идентификатор привычки
+     * @param id email пользователя
      */
-    void deleteById(String userMail, long id) throws SQLException;
+    void deleteById(long id) throws SQLException;
 
     /**
      * Находит все привычки пользователя по его email.
@@ -65,12 +63,9 @@ public interface HabitRepository {
     /**
      * Обновляет существующую привычку с новыми значениями.
      *
-     * @param userEmail       email пользователя
-     * @param oldTitle        старый заголовок привычки
-     * @param newTitle        новый заголовок привычки
-     * @param newDescription   новое описание привычки
-     * @param newFrequency     новая частота привычки
-     * @return true, если обновление прошло успешно, иначе false
+     * @param habit
      */
     void updateHabit(Habit habit) throws SQLException;
+
+
 }

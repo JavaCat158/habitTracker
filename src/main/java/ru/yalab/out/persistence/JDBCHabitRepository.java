@@ -8,17 +8,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/*
-public Habit(long id, String title, String description, String frequency, String userEmail) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
-        this.frequency = frequency;
-        this.creationDate = LocalDate.now();
-        this.userEmail = userEmail;
-        this.completedDates = new ArrayList<>();
-    }
-*/
 public class JDBCHabitRepository implements HabitRepository {
     DataBaseTemplate dataBaseTemplate;
 
@@ -57,28 +46,29 @@ public class JDBCHabitRepository implements HabitRepository {
     }
 
     @Override
-    public Habit findByTitle(String userMail, long id) throws SQLException {
-        String sql = "SELECT * FROM table_schema.habits WHERE ID = ?";
-        Habit habit = null;
-
-        try(Connection connection = dataBaseTemplate.getConnection();
-        PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setLong(1, id);
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                String title = resultSet.getString("title");
-                String description = resultSet.getString("description");
-                String frequency = resultSet.getString("frequency");
-                String userEmail = resultSet.getString("user_email");
-
-                habit = new Habit(id, title, description, frequency, userEmail);
+    public Habit findById(Long id) throws SQLException {
+        String sql = "SELECT * FROM table_schema.habits WHERE id = ?";
+        try (Connection connection = dataBaseTemplate.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setLong(1, id);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return new Habit(
+                        rs.getLong("id"),
+                        rs.getString("title"),
+                        rs.getString("description"),
+                        rs.getString("frequency"),
+                        rs.getString("user_email")
+                );
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return null;
     }
 
     @Override
-    public void deleteById(String userMail, long id) throws SQLException {
+    public void deleteById(long id) throws SQLException {
         String sql = "DELETE FROM table_schema.habits WHERE id = ?";
         try(Connection connection = dataBaseTemplate.getConnection();
         PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -144,17 +134,24 @@ public class JDBCHabitRepository implements HabitRepository {
                 "user_email = ? " +
                 "WHERE id = ?";
 
-        try(Connection connection = dataBaseTemplate.getConnection();
-        PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (Connection connection = dataBaseTemplate.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
             statement.setString(1, habit.getTitle());
             statement.setString(2, habit.getDescription());
             statement.setString(3, habit.getFrequency());
             statement.setString(4, habit.getUserEmail());
             statement.setLong(5, habit.getId());
-            System.out.println("Habit update: " + habit.getTitle());
+
+            int rowsUpdated = statement.executeUpdate();
+            if (rowsUpdated == 0) {
+                System.out.println("Привычка с id " + habit.getId() + " не найдена для обновления.");
+            } else {
+                System.out.println("Привычка успешно обновлена.");
+            }
         } catch (SQLException e) {
-            System.out.println("ERROR: " + e.getMessage());
+            System.err.println("Ошибка при обновлении привычки: " + e.getMessage());
+            throw e;
         }
     }
-
 }

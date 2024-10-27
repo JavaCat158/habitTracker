@@ -25,4 +25,9 @@ public interface UserRepository {
     void deleteByEmail(String email) throws SQLException;
 
     LinkedHashSet<User> findAll() throws SQLException;
+
+    void updateUserProfile(User user) throws SQLException;
+
+    void blockUser(String email) throws SQLException;
+
 }

@@ -30,8 +30,8 @@ public class GetHabitStatistic {
         this.habitRepository = habitRepository;
     }
 
-    public int getCompletedCount(String email, long id, LocalDate start, LocalDate end) throws SQLException {
-        Habit habit =habitRepository.findByTitle(email, id);
+    public int getCompletedCount(long id, LocalDate start, LocalDate end) throws SQLException {
+        Habit habit =habitRepository.findById(id);
         if(habit != null) {
             return (int) habit.getCompletedDates().stream()
                     .filter(date -> !date.isBefore(start) && !date.isAfter(end))

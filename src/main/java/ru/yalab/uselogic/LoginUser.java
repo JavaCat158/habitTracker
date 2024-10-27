@@ -1,6 +1,7 @@
 package ru.yalab.uselogic;
 
 import ru.yalab.entity.User;
+import ru.yalab.entity.UserRole;
 import ru.yalab.entity.UserStatus;
 import ru.yalab.repository.UserRepository;
 
@@ -38,6 +39,7 @@ public class LoginUser {
         User user = userRepository.findByEmail(email);
 
         if (user == null) {
+            System.out.println("Такого пользователя не существует или он был удален!");
             return false;
         }
 

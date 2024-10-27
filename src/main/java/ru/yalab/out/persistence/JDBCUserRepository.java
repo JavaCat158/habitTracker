@@ -9,17 +9,6 @@ import ru.yalab.repository.UserRepository;
 import java.sql.*;
 import java.util.LinkedHashSet;
 
-/*
-public User(long id, String name, String email, String password, UserRole role) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.role = role;
-        this.status = UserStatus.ACTIVE; // По умолчанию пользователь активен
-    }
-*/
-
 public class JDBCUserRepository implements UserRepository {
 
     private final DataBaseTemplate dataBaseTemplate;
@@ -30,10 +19,10 @@ public class JDBCUserRepository implements UserRepository {
 
     @Override
     public void addUser(User user) throws SQLException {
-        String sql = "INSERT UNTI table_schema.users (name, email, password) VALUES (?, ?, ?))";
+        String sql = "INSERT INTO table_schema.users (name, email, password) VALUES (?, ?, ?)";
 
         try (Connection conn = dataBaseTemplate.getConnection();
-        PreparedStatement stmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, user.getName());
             stmt.setString(2, user.getEmail());
             stmt.setString(3, user.getPassword());
@@ -45,21 +34,23 @@ public class JDBCUserRepository implements UserRepository {
     @Override
     public User findByEmail(String email) throws SQLException {
         User user = null;
-        String sql = "SELECT * FROM table_schema.users WHERE email = ?";
+        String sql = "select * from table_schema.users where email=?";
         try (Connection conn = dataBaseTemplate.getConnection();
-        PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, "email");
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, email);
 
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     long id = rs.getLong("id");
                     String name = rs.getString("name");
                     String password = rs.getString("password");
-                    String roleStr = rs.getString("role");
+                    String role = rs.getString("role");
+                    String status = rs.getString("status");
 
-                    UserRole role = UserRole.valueOf(roleStr.toUpperCase());
+                    UserRole roleString = UserRole.valueOf(role);
+                    UserStatus statusString = UserStatus.valueOf(status);
 
-                    user = new User(id, name, email, password, role);
+                    user = new User(id, name, email, password, roleString, statusString);
                 }
             }
         }
@@ -70,9 +61,11 @@ public class JDBCUserRepository implements UserRepository {
     public void deleteByEmail(String email) throws SQLException {
         String sql = "DELETE FROM table_schema.users WHERE email= ?";
         try (Connection conn = dataBaseTemplate.getConnection();
-        PreparedStatement stmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, email);
             stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
@@ -90,10 +83,44 @@ public class JDBCUserRepository implements UserRepository {
                 String email = rs.getString("email");
                 String password = rs.getString("password");
                 String role = rs.getString("role");
-                User user = new User(id, name, email, password, UserRole.valueOf(role));
+                String status = rs.getString("status");
+
+                UserStatus statusString = UserStatus.valueOf(status);
+                UserRole roleString = UserRole.valueOf(role);
+
+                User user = new User(id, name, email, password, roleString, statusString);
                 users.add(user);
             }
         }
         return users;
+    }
+
+    @Override
+    public void updateUserProfile(User user) throws SQLException {
+        String sql = "UPDATE table_schema.users SET name = ?, " +
+                "password = ?, " +
+                "email = ?, " +
+                "role = ?, " +
+                "status = ? ";
+        try (Connection conn = dataBaseTemplate.getConnection();
+        PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, user.getName());
+            stmt.setString(2, user.getPassword());
+            stmt.setString(3, user.getEmail());
+            stmt.setString(4, user.getRole().name());
+            stmt.setString(5, user.getStatus().name());
+            stmt.executeUpdate();
+        }
+    }
+
+    @Override
+    public void blockUser(String email) throws SQLException {
+        String sql = "UPDATE table_schema.users SET status = ? WHERE email = ?";
+        try (Connection conn = dataBaseTemplate.getConnection();
+        PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, UserStatus.BLOCKED.name());
+            stmt.setString(2, email);
+            stmt.executeUpdate();
+        }
     }
 }

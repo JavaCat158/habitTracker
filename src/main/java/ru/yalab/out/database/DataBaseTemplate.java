@@ -1,7 +1,8 @@
 package ru.yalab.out.database;
 
-import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -19,8 +20,11 @@ public class DataBaseTemplate {
 
     private void loadProperties() {
         Properties properties = new Properties();
-        try (FileInputStream fis = new FileInputStream("src/main/resources/application.properties")) {
-            properties.load(fis);
+        try (InputStream inputProper = getClass().getClassLoader().getResourceAsStream("application.properties")) {
+            if (inputProper == null) {
+                throw new FileNotFoundException("Фаил: application.properties не найден");
+            }
+            properties.load(inputProper);
             this.url = properties.getProperty("db.url");
             this.username = properties.getProperty("db.username");
             this.password = properties.getProperty("db.password");

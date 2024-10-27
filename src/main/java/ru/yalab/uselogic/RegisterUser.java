@@ -2,6 +2,7 @@ package ru.yalab.uselogic;
 
 import ru.yalab.entity.User;
 import ru.yalab.entity.UserRole;
+import ru.yalab.entity.UserStatus;
 import ru.yalab.repository.UserRepository;
 import ru.yalab.services.EmailValidator;
 
@@ -32,8 +33,8 @@ public class RegisterUser {
         this.userRepository = userRepository;
     }
 
-    public boolean execute(String username, String email, String password, UserRole userRole) throws SQLException {
-        // Проверка валидности email
+    public boolean execute(String username, String email, String password, UserRole userRole, UserStatus statusString) throws SQLException {
+
         if (!EmailValidator.isValidate(email)) {
             System.out.println("Некорректный email. Email должен быть вида буквы123@test.ru");
             return false;
@@ -45,8 +46,7 @@ public class RegisterUser {
             return false;
         }
 
-        // Создание нового пользователя
-        User user = new User(0, username, email, password, userRole); // ID 0 или автогенерация
+        User user = new User(0, username, email, password, userRole, statusString); // ID 0 или автогенерация
         userRepository.addUser(user);
         return true;
     }
