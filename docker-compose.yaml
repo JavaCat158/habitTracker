@@ -1,0 +1,16 @@
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: my_db_yalab
+    environment:
+      POSTGRES_USER: yalab
+      POSTGRES_PASSWORD: password123
+      POSTGRES_DB: yalab_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - /home/javacat/postgres/data:/var/lib/postgresql/data # Привязка к конкретной папке на хосте
+
+volumes:
+  postgres_data:
